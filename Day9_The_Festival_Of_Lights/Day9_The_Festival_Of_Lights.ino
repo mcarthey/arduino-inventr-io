@@ -94,14 +94,33 @@ void fireMode() {
 }
  
 void fairyMode() {
+  // Get the current time in milliseconds since the Arduino started
   unsigned long currentMillis = millis();
+  
+  // Calculate the brightness for LED 1 using the sine function
+  // currentMillis / 200.0 creates a time-based value that changes over time,
+  // making the sine wave progress.
+  // sin() generates a value between -1 and 1, which is then scaled to -127 to 127 by multiplying by 127.
+  // Adding 128 shifts the value to the range 1 to 255, suitable for PWM.
   int brightness1 = (sin(currentMillis / 200.0) * 127) + 128;
+
+  // Calculate the brightness for LED 2 using the cosine function
+  // The process is similar to brightness1, but using cos() instead of sin()
+  // cos() is phase-shifted relative to sin(), so this LED will have a different brightness pattern.
   int brightness2 = (cos(currentMillis / 200.0) * 127) + 128;
+
+  // Calculate the brightness for LED 3 using the sine function
+  // currentMillis + 1000 introduces a time offset, making this LED's brightness change 
+  // start later than LED 1 and LED 2. This creates a staggered effect.
   int brightness3 = (sin((currentMillis + 1000) / 200.0) * 127) + 128;
-  analogWrite(ledPin1, brightness1);
-  analogWrite(ledPin2, brightness2);
-  analogWrite(ledPin3, brightness3);
+
+  // Set the brightness of the LEDs using PWM
+  // analogWrite() expects a value between 0 and 255
+  analogWrite(ledPin1, brightness1); // Set LED 1 to the calculated brightness
+  analogWrite(ledPin2, brightness2); // Set LED 2 to the calculated brightness
+  analogWrite(ledPin3, brightness3); // Set LED 3 to the calculated brightness
 }
+
  
 void steadyMode() {
   analogWrite(ledPin1, 255);
